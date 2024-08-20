@@ -5,6 +5,10 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
+import static by.mnp.util.Constants.CAPACITY_ERROR_MESSAGE;
+import static by.mnp.util.Constants.IMPLEMENTATION_ERROR;
+import static by.mnp.util.Constants.NOTIFICATION_NOT_NULL;
+
 @SuppressWarnings("unchecked")
 public class CustomPriorityQueueImpl<E> implements CustomPriorityQueue<E> {
 
@@ -31,7 +35,7 @@ public class CustomPriorityQueueImpl<E> implements CustomPriorityQueue<E> {
                     queue = (E[]) new Object[integer];
                     size = 0;
                 }, () -> {
-                    throw new IllegalArgumentException("Capacity must be > 0 !");
+                    throw new IllegalArgumentException(CAPACITY_ERROR_MESSAGE);
                 });
     }
 
@@ -43,7 +47,7 @@ public class CustomPriorityQueueImpl<E> implements CustomPriorityQueue<E> {
                     size = 0;
                     this.comparator = comparator;
                 }, () -> {
-                    throw new IllegalArgumentException("Capacity must > than 0 !");
+                    throw new IllegalArgumentException(CAPACITY_ERROR_MESSAGE);
                 });
     }
 
@@ -58,7 +62,7 @@ public class CustomPriorityQueueImpl<E> implements CustomPriorityQueue<E> {
                     size++;
                     siftUp(size - 1);
                 }, () -> {
-                    throw new NullPointerException("Can't store null elements!");
+                    throw new NullPointerException(NOTIFICATION_NOT_NULL);
                 });
         return true;
     }
@@ -124,7 +128,7 @@ public class CustomPriorityQueueImpl<E> implements CustomPriorityQueue<E> {
         return Optional.ofNullable(comparator)
                 .orElseGet(() -> (e1, e2) -> {
                     if (!(e1 instanceof Comparable)) {
-                        throw new ClassCastException("Object " + e1 + " does not implement Comparable interface!");
+                        throw new ClassCastException(IMPLEMENTATION_ERROR + e1);
                     }
                     return ((Comparable<? super E>) e1).compareTo((E) e2);
                 })
